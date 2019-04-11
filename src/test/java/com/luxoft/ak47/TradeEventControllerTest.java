@@ -1,20 +1,17 @@
 package com.luxoft.ak47;
 
 import io.restassured.RestAssured;
-import org.hamcrest.Matcher;
-import org.hamcrest.Matchers;
+import io.restassured.internal.assertion.Assertion;
+import org.assertj.core.api.Assertions;
+import org.fest.assertions.Assert;
 import org.junit.jupiter.api.Test;
-import org.hamcrest.Matchers;
-import static org.assertj.core.api.Assertions.*;
-
 
 import static io.restassured.RestAssured.when;
-import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.hamcrest.text.IsEmptyString.isEmptyOrNullString;
 import static org.hamcrest.xml.HasXPath.hasXPath;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.fest.assertions.Assertions.assertThat;
 
 class TradeEventControllerTest {
 
@@ -52,6 +49,14 @@ class TradeEventControllerTest {
     @Test
     void checkCurrencyIsNotNull() {
         when().get("/tradeEvent/123").then().statusCode(200).body("tradeEvent.currency", not(isEmptyOrNullString()));
+    }
+
+    @Test
+    void checkCurrencyIsInUpperCaseAndHasThreeChar() {
+        String currency = when().get("/tradeEvent/123").then().statusCode(200).extract().xmlPath().getString("tradeEvent.currency");
+        Assertions.assertThat(currency).isUpperCase();
+        Assertions.assertThat(currency).hasSize(3);
+
     }
 
 

@@ -13,7 +13,12 @@ public class TradeEventController {
 
     @RequestMapping(value = "/tradeEvent/{id}", produces = {MediaType.TEXT_XML_VALUE})
     String tradeEvent(@PathVariable String id ){
-        return "<tradeEvent><id>" + id + "</id><version>0</version>" + "<currency>" + getRandomCurrency() + "</currency><tradeLocation>HKG</tradeLocation></tradeEvent>";
+        String tradeLocationTag;
+        if (id.toUpperCase().contains("OBS")){
+            tradeLocationTag = "<tradeLocation>HKG</tradeLocation>";
+        } else
+            tradeLocationTag = "";
+        return "<tradeEvent><id>" + id + "</id><version>0</version>" + "<currency>" + getRandomCurrency() + "</currency>" + tradeLocationTag + "</tradeEvent>";
     }
 
 
