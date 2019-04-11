@@ -4,8 +4,12 @@ import io.restassured.RestAssured;
 import org.hamcrest.Matcher;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
+import org.hamcrest.Matchers;
+import static org.assertj.core.api.Assertions.*;
+
 
 import static io.restassured.RestAssured.when;
+import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.hamcrest.text.IsEmptyString.isEmptyOrNullString;
@@ -19,7 +23,7 @@ class TradeEventControllerTest {
     void tradeEvent() {
         RestAssured
                 .given()
-                .when().get("/tradeEvent")
+                .when().get("/tradeEvent/123")
                 .then().statusCode(200);
     }
 
@@ -30,7 +34,7 @@ class TradeEventControllerTest {
 
     @Test
     void shouldReturnTradesWithVersion0() {
-        when().get("/tradeEvent").then().statusCode(200).body("tradeEvent.version", equalTo("0"));
+        when().get("/tradeEvent/123").then().statusCode(200).body("tradeEvent.version", equalTo("0"));
 
     }
 
@@ -45,15 +49,21 @@ class TradeEventControllerTest {
 
     }
 
-
-
     @Test
-    void shouldHaveTradeLocationIfFromOBS() {
-        when().get("/tradeEvent/OBS-123").then().body(hasXPath("tradeEvent/tradeLocation"));
+    void checkCurrencyIsNotNull() {
+        when().get("/tradeEvent/123").then().statusCode(200).body("tradeEvent.currency", not(isEmptyOrNullString()));
+    }
+
+
+  @Test void shouldHaveTradeLocationIfFromOBS() {
+      when().get("/tradeEvent/OBS-123").then().body(hasXPath("/tradeEvent/tradeLocation"));
+  }
 
     //проверить чтобы был из ОБС и сделать чтобы приходил нормально
+    // трейд должен быть с валютой - test that currency has 3 uppercase characters
+    // controller should return random currency from the list
+
 
     }
 
 
-}
