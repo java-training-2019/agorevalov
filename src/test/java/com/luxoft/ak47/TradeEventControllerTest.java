@@ -1,20 +1,15 @@
 package com.luxoft.ak47;
 
 import io.restassured.RestAssured;
-import io.restassured.internal.assertion.Assertion;
 import org.assertj.core.api.Assertions;
-import org.fest.assertions.Assert;
 import org.junit.jupiter.api.Test;
-
 import static io.restassured.RestAssured.when;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.hamcrest.text.IsEmptyString.isEmptyOrNullString;
 import static org.hamcrest.xml.HasXPath.hasXPath;
-import static org.fest.assertions.Assertions.assertThat;
 
 class TradeEventControllerTest {
-
 
     @Test
     void tradeEvent() {
@@ -64,11 +59,6 @@ class TradeEventControllerTest {
       when().get("/tradeEvent/OBS-123").then().body(hasXPath("/tradeEvent/tradeLocation"));
   }
 
-    //проверить чтобы был из ОБС и сделать чтобы приходил нормально
-    // трейд должен быть с валютой - test that currency has 3 uppercase characters
-    // controller should return random currency from the list
-
-
-    }
+ }
 
 
